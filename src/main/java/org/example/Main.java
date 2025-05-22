@@ -5,58 +5,52 @@ import org.example.entity.Employee;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        LinkedList<Employee> employees = new LinkedList<>();
-        employees.add(new Employee(1, "Ali", "Veli"));
-        employees.add(new Employee(2, "Ayşe", "Fatma"));
-        employees.add(new Employee(1, "Ali", "Veli"));
-        employees.add(new Employee(3, "John", "Doe"));
-        employees.add(new Employee(2, "Ayşe", "Fatma"));
-        employees.add(new Employee(4, "Jane", "Smith"));
 
-        System.out.println("Duplicates: " + findDuplicates(employees));
-        System.out.println("Uniques: " + findUniques(employees));
-        System.out.println("After removing duplicates: " + removeDuplicates(employees));
-    }
-
-    public static List<Employee> findDuplicates(List<Employee> list) {
+    public static List<Employee> findDuplicates(List<Employee> employees) {
         Set<Employee> seen = new HashSet<>();
-        Set<Employee> duplicates = new HashSet<>();
-        for (Employee e : list) {
-            if (!seen.add(e)) {
-                duplicates.add(e);
+        Set<Employee> duplicates = new LinkedHashSet<>();
+        for (Employee emp : employees) {
+            if (emp != null) {
+                if (!seen.add(emp)) {
+                    duplicates.add(emp);
+                }
             }
         }
-        return new ArrayList<>(duplicates);
+        return new LinkedList<>(duplicates);
     }
 
-    public static Map<Integer, Employee> findUniques(List<Employee> list) {
-        Map<Employee, Integer> frequencyMap = new HashMap<>();
-        for (Employee e : list) {
-            frequencyMap.put(e, frequencyMap.getOrDefault(e, 0) + 1);
-        }
+    public static Map<Integer, Employee> findUniques(List<Employee> employees) {
+        Map<Integer, Integer> countMap = new HashMap<>();
+        Map<Integer, Employee> result = new HashMap<>();
 
-        Map<Integer, Employee> uniqueMap = new HashMap<>();
-        for (Map.Entry<Employee, Integer> entry : frequencyMap.entrySet()) {
-            if (entry.getValue() == 1 || entry.getValue() > 1 && !uniqueMap.containsKey(entry.getKey().getId())) {
-                uniqueMap.put(entry.getKey().getId(), entry.getKey());
+        for (Employee emp : employees) {
+            if (emp != null) {
+                countMap.put(emp.getId(), countMap.getOrDefault(emp.getId(), 0) + 1);
+                result.putIfAbsent(emp.getId(), emp); // sadece ilkini koy
             }
         }
-        return uniqueMap;
+        return result;
     }
 
-    public static List<Employee> removeDuplicates(List<Employee> list) {
+    public static List<Employee> removeDuplicates(List<Employee> employees) {
         Map<Employee, Integer> countMap = new HashMap<>();
-        for (Employee e : list) {
-            countMap.put(e, countMap.getOrDefault(e, 0) + 1);
+        for (Employee emp : employees) {
+            if (emp != null) {
+                countMap.put(emp, countMap.getOrDefault(emp, 0) + 1);
+            }
         }
 
-        List<Employee> result = new ArrayList<>();
+        List<Employee> result = new LinkedList<>();
         for (Map.Entry<Employee, Integer> entry : countMap.entrySet()) {
             if (entry.getValue() == 1) {
                 result.add(entry.getKey());
             }
         }
+
         return result;
+    }
+
+    public static void main(String[] args) {
+        // Test için manuel kullanım gerekirse
     }
 }
