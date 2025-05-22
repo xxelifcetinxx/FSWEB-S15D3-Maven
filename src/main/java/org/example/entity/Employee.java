@@ -28,8 +28,7 @@ public class Employee {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Employee)) return false;
-        Employee employee = (Employee) o;
+        if (!(o instanceof Employee employee)) return false;
         return id == employee.id &&
                 Objects.equals(firstname, employee.firstname) &&
                 Objects.equals(lastname, employee.lastname);
@@ -42,10 +41,4 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                '}';
-    }
-}
+        return id + " - "
